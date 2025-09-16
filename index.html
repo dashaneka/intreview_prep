@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>seu interactive interview prep</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'inter', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+        }
+        .question-card {
+            transition: all 0.3s ease-in-out;
+            border-color: #374151; /* border-gray-700 */
+        }
+        .answer-content {
+            display: none;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+        }
+        .question-card.active .answer-content {
+            display: block;
+            max-height: 500px; /* Adjust as needed */
+            padding-top: 1rem;
+            padding-bottom: 1.25rem;
+        }
+        .question-card.active .arrow-icon {
+            transform: rotate(180deg);
+        }
+        .question-card.active .question-header {
+            border-bottom: 1px solid #374151; /* border-gray-700 */
+        }
+    </style>
+</head>
+<body class="text-gray-200 antialiased">
+
+    <div class="container mx-auto px-4 py-8 md:py-12 max-w-4xl">
+
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-white tracking-tight">seu interview mastery guide</h1>
+            <p class="text-lg text-gray-400 mt-2">your new script for a successful interview. click each question.</p>
+        </header>
+
+        <main id="qa-container" class="space-y-4">
+            <!-- questions will be dynamically inserted here -->
+        </main>
+
+    </div>
+
+    <script>
+        const interviewData = [
+            {
+                question: "1. what's your name?",
+                answer: "my name is rajnish sahani."
+            },
+            {
+                question: "2. tell me about yourself.",
+                answer: "i'm rajnish sahani, and i'm passionate about the intersection of technology and business. growing up, i've been actively involved in my family's mobile phone shop, b&b mobile, which gave me a practical understanding of customer service and management. this hands-on experience has fueled my desire to pursue a formal business education."
+            },
+            {
+                question: "3. why did you choose georgia for your bba/mba?",
+                answer: "i was looking for a country that offers a world-class business education in a safe, multicultural setting. georgia stands out for its high academic standards and affordability. i believe studying here will give me a global perspective on business, which is essential in today's world."
+            },
+            {
+                question: "4. why did you choose seu for your course?",
+                answer: "seu's reputation for practical, industry-relevant education is what drew me in. i was particularly impressed with the university's focus on modern business practices and the strong credentials of its faculty. i'm confident seu will provide me with the specific skills and network i need to achieve my career goals."
+            },
+            {
+                question: "5. what inspires you to pursue a bba/mba?",
+                answer: "my inspiration comes directly from my experience at our mobile shop. i've seen firsthand how a small business works, but i want to learn the strategies to make it grow. i'm driven by the desire to understand the bigger picture – from marketing and finance to global strategy – and to become a skilled business leader."
+            },
+            {
+                question: "6. what are your hobbies?",
+                answer: "i'm really into learning about new technology, especially in the mobile industry, which helps with my family's business. i also enjoy playing football, as it teaches me about teamwork and strategy. for me, both are about understanding how to work together to achieve a goal."
+            },
+            {
+                question: "7. since you are from nepal, tell me something about your country.",
+                answer: "my country, nepal, is not only known for its incredible natural beauty but also for its growing entrepreneurial spirit. there's a real drive for business innovation, especially in sectors like tourism and technology. it's an exciting environment that has inspired me to think like an entrepreneur."
+            },
+            {
+                question: "8. what have you decided to do after your bba/mba?",
+                answer: "my goal is to return and apply what i've learned to innovate in the retail technology sector. initially, i plan to work in a management role to gain broader industry experience. ultimately, i want to expand my family business, perhaps introducing new services or even developing my own tech-related venture."
+            },
+            {
+                question: "9. why did you choose this course, and what are your future plans?",
+                answer: "this bba/mba is the perfect foundation for my ambitions because it combines theory with practical application. as for my future, i'm focused on a career in business management, with a long-term goal of becoming an entrepreneur and leader in the tech retail space."
+            },
+            {
+                question: "10. what do you know about the education system in your country?",
+                answer: "the education system in nepal is quite comprehensive and is increasingly focusing on practical skills. my own education in subjects like economics gave me a solid foundation and sparked my interest in pursuing a higher degree in management on an international level."
+            },
+            {
+                question: "11. do you have any international friends from other countries?",
+                answer: "i don't have close international friends yet, but that's one of the things i'm most excited about. i'm really looking forward to studying alongside people from all over the world at seu, sharing ideas, and learning about different cultures and business perspectives."
+            },
+            {
+                question: "12. have you ever been to any other country before?",
+                answer: "no, this will be my first time living and studying abroad. i see it as a significant step for both my personal and professional growth, and i am fully prepared to embrace the experience and learn as much as i can from it."
+            },
+            {
+                question: "13. what is your dream country?",
+                answer: "rather than one dream country, i'm more interested in experiencing different business hubs. i'd be fascinated to visit places known for innovation, like silicon valley or the tech scenes in singapore, to learn from their business environments. my dream is more about learning from global leaders, wherever they may be."
+            },
+            {
+                question: "14. what do you know about georgia? why did you choose georgia?",
+                answer: "i know georgia is a safe, welcoming country with a rich history and a rising reputation for excellent education. i chose it because it provides a unique opportunity to receive a european-standard education and gain a global perspective in a financially accessible way."
+            },
+            {
+                question: "15. isn't a business degree competitive?",
+                answer: "it absolutely is, and i think that's what makes it exciting. i'm not afraid of competition; i believe it pushes you to be better. my experience in a competitive retail market with our mobile shop has taught me to be resilient and to always look for ways to innovate."
+            },
+            {
+                question: "16. aren't your parents nervous about you studying abroad?",
+                answer: "they are naturally concerned, as any parents would be, but they are also my biggest supporters. they have seen my passion for business and they believe this is the right step for my future. we've discussed it extensively, and they are confident in my ability to handle the responsibility."
+            }
+        ];
+
+        const container = document.getElementById('qa-container');
+
+        interviewData.forEach((item) => {
+            const card = document.createElement('div');
+            card.className = 'question-card bg-gray-800 rounded-lg shadow-lg';
+
+            card.innerHTML = `
+                <div class="question-header p-5 cursor-pointer flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-cyan-400">${item.question}</h3>
+                    <svg class="arrow-icon w-6 h-6 text-gray-400 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+                <div class="answer-content px-5">
+                    <p class="text-gray-300 bg-gray-900/50 p-4 rounded-md">${item.answer}</p>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+        
+        container.addEventListener('click', function(e) {
+            const header = e.target.closest('.question-header');
+            if (!header) return;
+            
+            const card = header.parentElement;
+            
+            // close other cards
+            document.querySelectorAll('.question-card.active').forEach(activeCard => {
+                if (activeCard !== card) {
+                    activeCard.classList.remove('active');
+                }
+            });
+
+            card.classList.toggle('active');
+        });
+
+    </script>
+</body>
+</html>
+
